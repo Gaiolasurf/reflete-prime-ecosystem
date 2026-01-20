@@ -20,6 +20,9 @@ jobs:
           channel: 'stable'
           flutter-version: '3.19.0'
 
+      - name: Create Web Structure (Fix Missing Files)
+        run: flutter create . --platforms=web
+
       - name: Install Dependencies
         run: flutter pub get
 
