@@ -16,3 +16,8 @@ dependencies:
 
 flutter:
   uses-material-design: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  vercel_flutter: ^0.1.0 # Adição Crítica
