@@ -1,36 +1,22 @@
-name: Deploy Reflete Prime to Pages
-
+name: Deploy
 on:
   push:
-    branches: [ main ]
-
+    branches: [main]
 permissions:
   contents: write
-
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.19.0'
-
-      - name: Create Web Structure (Fix Missing Files)
-        run: flutter create . --platforms=web
-
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Build Web App
-        run: flutter build web --release --base-href ./
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - run: |
+          flutter create . --platforms=web
+          flutter pub get
+          flutter build web --release --base-href "/reflete-prime-ecosystem/"
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
