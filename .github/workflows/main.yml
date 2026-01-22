@@ -13,6 +13,7 @@ jobs:
         with:
           channel: 'stable'
       - run: |
+          flutter create --project-name reflete_prime --platforms=web .
           flutter pub get
           flutter build web --release --base-href "/reflete-prime-ecosystem/"
       - uses: peaceiris/actions-gh-pages@v3
