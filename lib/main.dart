@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:timelines/timelines.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const Color kGold = Color(0xFFD4AF37);
@@ -101,17 +100,56 @@ class TimelineTab extends StatelessWidget {
   const TimelineTab({super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final steps = [
+      {"title": "Estrutura - OK", "status": "done"},
+      {"title": "Acabamento - Em curso", "status": "doing"},
+      {"title": "Entrega - Fev/26", "status": "todo"},
+    ];
+
+    return ListView.builder(
       padding: const EdgeInsets.all(20),
-      child: FixedTimeline.tileBuilder(
-        theme: TimelineThemeData(nodePosition: 0, color: kGold),
-        builder: TimelineTileBuilder.connected(
-          itemCount: 3,
-          contentsBuilder: (_, i) => Padding(padding: const EdgeInsets.all(15), child: Text(["Estrutura - OK", "Acabamento - Em curso", "Entrega - Fev/26"][i])),
-          indicatorBuilder: (_, i) => DotIndicator(color: i == 1 ? kGold : Colors.green),
-          connectorBuilder: (_, i, __) => const SolidLineConnector(),
-        ),
-      ),
+      itemCount: steps.length,
+      itemBuilder: (context, index) {
+        final step = steps[index];
+        return IntrinsicHeight(
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: step["status"] == "done" ? Colors.green : (step["status"] == "doing" ? kGold : Colors.grey),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  if (index != steps.length - 1)
+                    Expanded(
+                      child: Container(
+                        width: 2,
+                        color: kGold.withOpacity(0.3),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Text(
+                    step["title"]!,
+                    style: TextStyle(
+                      color: step["status"] == "todo" ? Colors.white38 : Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
