@@ -16,7 +16,11 @@ jobs:
           flutter create --project-name reflete_prime --platforms=web .
           flutter pub get
           flutter build web --release --base-href "/reflete-prime-ecosystem/"
-      - uses: peaceiris/actions-gh-pages@v3
+          # Garante que o GitHub Pages não ignore arquivos que começam com underline
+          touch build/web/.nojekyll
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
+          force_orphan: true
