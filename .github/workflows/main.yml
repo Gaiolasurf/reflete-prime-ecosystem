@@ -1,23 +1,33 @@
-name: Deploy
+name: Deploy Reflete Prime to Pages
+
 on:
   push:
-    branches: [main]
+    branches: [ main ]
+
 permissions:
   contents: write
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: |
-          flutter create --project-name reflete_prime --platforms=web .
-          flutter pub get
+          flutter-version: '3.19.0'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Web App
+        run: |
           flutter build web --release --base-href "/reflete-prime-ecosystem/"
-          # Garante que o GitHub Pages não ignore arquivos que começam com underline
           touch build/web/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
